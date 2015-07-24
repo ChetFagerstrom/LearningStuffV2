@@ -34,11 +34,34 @@ static void update_time() {
         strftime(min_buffer, sizeof(min_buffer), "%M", tick_time);
         snprintf(buffer, sizeof(buffer), "%d:%s", hour, min_buffer);
 
+      //  if (!clock_is_24h_style() && (time_text[0] == '0'))
+//{
+//memmove(time_text, &time_text[1], sizeof(time_text) - 1);
+//}
+  
+      
+      
     }
+  
+
+  
+//  if(date_buffer[3] == '0')
+//  {
+//  memmove(date_buffer, &date_buffer[1], sizeof(date_buffer) - 1);
+//}
+  
+  snprintf(date_buffer, sizeof(date_buffer),"%d/%d",tick_time->tm_mon+1,tick_time->tm_mday);
+  
+ 
   
   // format the way that the time text is going to be displayed
   //strftime(buffer, sizeof("00:00"),"%I:%M", tick_time);
-strftime(date_buffer, sizeof("00/00/00"), "%D/%Z/%M", tick_time);
+strftime(date_buffer, sizeof("00/00/00"), "%D/%e/%M", tick_time);
+  
+ if(date_buffer[0] == '0')
+  {
+  memmove(date_buffer, &date_buffer[1], sizeof(date_buffer) - 1);
+}
   
 snprintf(name_buffer, sizeof(name_buffer), "Chet");
 
