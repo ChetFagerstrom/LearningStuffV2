@@ -1,8 +1,8 @@
 #include <pebble.h>
 
 static Window *s_main_window;
-static TextLayer *s_time_layer, *s_date_layer;
-static GFont s_time_font, s_date_font;
+static TextLayer *s_time_layer, *s_date_layer, *s_name_layer;
+static GFont s_time_font, s_date_font, *s_name_font;
 static BitmapLayer *s_background_layer;
 static GBitmap *s_background_bitmap;
 
@@ -16,8 +16,10 @@ static void update_time() {
   // int minute = tick_time->tm_min;
   
   // Create a long-lived buffer
+  static char name_buffer[200];
   static char buffer[5];
   static char date_buffer[] = "00/00/00";
+  
 
   // Write the current hours and minutes into the buffer
     if(clock_is_24h_style() == true) {
@@ -38,12 +40,13 @@ static void update_time() {
   //strftime(buffer, sizeof("00:00"),"%I:%M", tick_time);
 strftime(date_buffer, sizeof("00/00/00"), "%D/%Z/%M", tick_time);
   
-
+snprintf(name_buffer, sizeof(name_buffer), "Chet");
 
   // Display this time and date on the TextLayer
   text_layer_set_text(s_time_layer, buffer);
   text_layer_set_text(s_date_layer, date_buffer);
-
+  text_layer_set_text(s_name_layer, name_buffer);
+ 
 }
 
 static void main_window_load(Window *window) {
@@ -53,10 +56,18 @@ static void main_window_load(Window *window) {
   bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_background_layer));
   
+  
   // Create time TextLayer
+  s_name_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_Reckoner_24));
   s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_Reckoner_30));
-  s_date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_Reckoner_30));
-
+  s_date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_Reckoner_24));
+  
+  //Name Layer
+  s_name_layer = text_layer_create(GRect(2, 0, 144, 168));
+  text_layer_set_background_color(s_name_layer, GColorClear);
+  text_layer_set_text_color(s_name_layer, GColorBlack);
+  text_layer_set_text(s_name_layer, "Chet");
+  
   //Time Layer
   s_time_layer = text_layer_create(GRect(13, 130, 120, 40));
   text_layer_set_background_color(s_time_layer, GColorClear);
@@ -64,29 +75,37 @@ static void main_window_load(Window *window) {
   text_layer_set_text(s_time_layer, "00:00");
   
   //Date Layer
-  s_date_layer = text_layer_create(GRect(14, 0, 120, 40));
+  s_date_layer = text_layer_create(GRect(-2, 0, 144, 168));
   text_layer_set_background_color(s_date_layer, GColorClear);
   text_layer_set_text_color(s_date_layer, GColorBlack);
   text_layer_set_text(s_date_layer, "00/00/00");
 
   // Improve the layout to be more like a watchface
+  text_layer_set_font(s_name_layer, s_name_font);
+  text_layer_set_text_alignment(s_name_layer, GTextAlignmentLeft);
+  
   text_layer_set_font(s_time_layer, s_time_font);
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
 
   text_layer_set_font(s_date_layer, s_date_font);
-  text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
+  text_layer_set_text_alignment(s_date_layer, GTextAlignmentRight);
   
   // Add it as a child layer to the Window's root layer
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_name_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
+  
 }
 
 static void main_window_unload(Window *window) {
     
     // Unload GFont
+    fonts_unload_custom_font(s_name_font);
     fonts_unload_custom_font(s_time_font);
     fonts_unload_custom_font(s_date_font);
+  
     // Destroy time layer
+    text_layer_destroy(s_name_layer);
     text_layer_destroy(s_time_layer);
     text_layer_destroy(s_date_layer);
     

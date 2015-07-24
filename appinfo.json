@@ -12,49 +12,19 @@
     "resources": {
         "media": [
             {
-                "file": "images/Venom2_converted (2).png",
-                "name": "VENOM",
-                "type": "png"
-            },
-            {
-                "file": "images/Venom2_converted.png",
-                "name": "VenomRight",
-                "type": "png"
-            },
-            {
-                "file": "fonts/8-BIT WONDER.TTF",
-                "name": "ATE_BIT_24",
+                "file": "fonts/Reckoner - Copy.ttf",
+                "name": "Reckoner_24",
                 "type": "font"
             },
             {
-                "file": "images/deathstroke_8_bit_by_sonikuu4-d85rgos.png",
-                "name": "DS",
-                "type": "png"
-            },
-            {
-                "file": "images/asl_resized_mono.png",
-                "name": "SPARK_ICON",
-                "type": "png"
-            },
-            {
-                "file": "images/Finger.png",
-                "name": "Finger",
+                "file": "images/Venom2_converted (2).png",
+                "name": "VENOM",
                 "type": "png"
             },
             {
                 "file": "fonts/Reckoner.ttf",
                 "name": "Reckoner_30",
                 "type": "font"
-            },
-            {
-                "file": "images/Finger_converted.png",
-                "name": "FingerC",
-                "type": "png"
-            },
-            {
-                "file": "images/Wolverine (1).png",
-                "name": "Wolverine",
-                "type": "png"
             }
         ]
     },
